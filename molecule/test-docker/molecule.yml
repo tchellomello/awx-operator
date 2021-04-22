@@ -8,7 +8,7 @@ lint: |
   yamllint .
   ansible-lint
 platforms:
-  - name: kind-test-local
+  - name: kind-test-docker
     groups:
       - k8s
     image: bsycorp/kind:v1.17.9
@@ -30,8 +30,8 @@ provisioner:
       all:
         operator_namespace: ${TEST_NAMESPACE:-default}
   env:
-    K8S_AUTH_KUBECONFIG: /tmp/molecule/kind-test-local/kubeconfig
-    KUBECONFIG: /tmp/molecule/kind-test-local/kubeconfig
+    K8S_AUTH_KUBECONFIG: /tmp/molecule/kind-test-docker/kubeconfig
+    KUBECONFIG: /tmp/molecule/kind-test-docker/kubeconfig
     ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/roles
     KIND_PORT: '${TEST_CLUSTER_PORT:-10443}'
 scenario:

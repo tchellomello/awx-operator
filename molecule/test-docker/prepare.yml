@@ -35,4 +35,4 @@
       retries: 60
       delay: 5
 
-- import_playbook: ../default/prepare.yml
+- import_playbook: ../common/prepare.yml

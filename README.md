@@ -555,7 +555,7 @@ If you want to actively develop the operator, use `molecule converge`, which doe
 #### Testing in Docker
 
 ```sh
-#> molecule test -s test-local
+#> molecule test -s test-docker
 ```
 
 This environment is meant for headless testing (e.g. in a CI environment, or when making smaller changes which don't need to be verified through a web interface). It is difficult to test things like AWX's web UI or to connect other applications on your local machine to the services running inside the cluster, since it is inside a Docker container with no static IP address.

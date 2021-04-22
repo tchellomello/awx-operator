@@ -8,7 +8,7 @@ lint: |
   yamllint .
   ansible-lint
 platforms:
-  - name: kind-default
+  - name: kind-common
     groups:
       - k8s
     image: bsycorp/kind:latest-1.14

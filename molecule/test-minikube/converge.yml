@@ -1,6 +1,6 @@
 ---
 # TODO: For some reason prepare is not run after a destroy in the Minikube env.
-- import_playbook: ../default/prepare.yml
+- import_playbook: ../common/prepare.yml
 
 - name: Build Operator in Minikube
   hosts: localhost
@@ -138,4 +138,4 @@
           fail:
             msg: "Failed on action: converge"
 
-- import_playbook: '{{ playbook_dir }}/../default/asserts.yml'
+- import_playbook: '{{ playbook_dir }}/../common/asserts.yml'
