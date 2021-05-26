@@ -1,0 +1,47 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+#lint: |
+#  set -e
+#  yamllint .
+#  ansible-lint
+platforms:
+  - name: kind-test-podman
+    groups:
+      - k8s
+    image: docker.io/kindest/node:v1.21.1
+    privileged: True
+    override_command: no
+    exposed_ports:
+      - 6443/tcp
+      - 10080/tcp
+    published_ports:
+      - 0.0.0.0:${TEST_CLUSTER_PORT:-10443}:6443/tcp
+    pre_build_image: yes
+    volumes:
+      - ${MOLECULE_PROJECT_DIRECTORY}:/build:Z
+
+provisioner:
+  name: ansible
+  log: True
+  inventory:
+    group_vars:
+      all:
+        operator_namespace: ${TEST_NAMESPACE:-default}
+  env:
+    K8S_AUTH_KUBECONFIG: /tmp/molecule/kind-test-podman/kubeconfig
+    KUBECONFIG: /tmp/molecule/kind-test-podman/kubeconfig
+    ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/roles
+    KIND_PORT: '${TEST_CLUSTER_PORT:-8080}'
+scenario:
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    - destroy

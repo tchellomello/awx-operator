@@ -1,0 +1,27 @@
+---
+- name: Create
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    K8S_AUTH_KUBECONFIG: /tmp/molecule/kind-test-podman/kubeconfig
+    KUBECONFIG: /tmp/molecule/kind-test-podman/kubeconfig
+    ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/roles
+    artifact_dir: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/molecule/_artifacts"
+    kind_image: docker.io/kindest/node:v1.21.1
+
+
+  tasks:
+    - name: Ensure kind is installed.
+      command: which kind
+      register: _kind_path
+      changed_when: false
+      
+    - name: Build Kind Cluster
+      become: true
+      shell: >-
+        "{{ kind_path }} create cluster --name kind-test-podman
+        --kubeconfig {{ K8S_AUTH_KUBECONFIG }}
+        --config {{ artifact_dir }}/kind-config.yml
+        --image {{ kind_image }}"
